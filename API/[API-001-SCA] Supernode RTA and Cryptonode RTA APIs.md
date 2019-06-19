@@ -2,8 +2,10 @@
 
 [Supernode Core Interfaces](#supernode-core-interfaces)
 
-- [GetPaymentData - return payment data for given payment id and block number and block hash](#getpaymentdata---return-payment-data-for-given-payment-id-and-block-number-and-block-hash)
+- [PaymentDataRequest - request payment data for given payment id and block number and block hash](#paymentdatarequest---request-payment-data-for-given-payment-id-and-block-number-and-block-hash)
    
+- [PaymentDataResponse - async reply (callback) to payment data request (PaymentDataRequest)](#PaymentDataResponse---async-reply-(callback)-to-payment-data-request-(PaymentDataRequest))
+
 - [StorePaymentData - handles payment multicast and stores payment data](#storepaymentdata---handles-payment-multicast-and-stores-payment-data)
    
 - [AuthorizeRtaTx - process incoming RTA Tx authorization](#authorizertatx---process-incoming-rta-tx-authorization)
@@ -25,6 +27,9 @@
 - [Pay - process payment](#pay---process-payment)
    
 - [GetPaymentStatus - returns payment status for given payment id](#getpaymentstatus---returns-payment-status-for-given-payment-id)
+
+- [GetTx - returns transaction by payment id. Called by POS](#GetTx---returns-transaction-by-payment-id.-Called-by-POS)
+
 
 [JSON - RPC interfaces on cryptonode side to communicate with supernode](#json---rpc-interfaces-on-cryptonode-side-to-communicate-with-supernode)
 
@@ -49,15 +54,20 @@
 ## Supernode Core Interfaces
 
 
-### GetPaymentData - return payment data for given payment id and block number and block hash
+### PaymentDataRequest - request payment data for given payment id and block number and block hash
+
+**Normally called by Cryptonode to it's connected supernode, but also supports synchronous call**
+
+
 Input:
 
 - PaymentID - globally unique payment id
 - BlockNumber - number of block auth sample built for;
 - BlockHash  - hash of this block in blockchain (probably redudant);
-- CallbackURI -  optional, if set - do not return response to caller but send it as separate unicast message
+- CallbackURI -  optional, if set - do not return response to caller but send it as separate unicast message (`TODO: check if it really needs a sync option, probably only for testing`)
 
 Output: 
+- PaymentID - payment id from request (to match response/request in case async call)
 - PaymentData - serialized encrypted payment data
 - AuthSampeKeys - array of N (N=8) public supernode ids and it's message keys. It's possible to retrieve a wallet address by public id
 
@@ -83,7 +93,8 @@ HTTP code: 200
 Response body:
 ```ruby
 {
-     "PaymentData": {
+        "PaymentId" : "payment_id string",
+        "PaymentData": {
            "EncryptedPayment":  "08600e7b9bb...08600e7b9bb", // encrypted serialized payment (incl amount and payment details)
            "AuthSampleKeys" : [  // 8 keys for auth sample members
                 { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805", "key": "7683a2a0..4c40e9cf" },
@@ -119,6 +130,77 @@ Response body:
     "message": "Error description"
 }
 ```
+
+### PaymentDataResponse - async reply (callback) to payment data request (PaymentDataRequest)
+
+**Called by Cryptonode to it's connected supernode**
+
+Input:
+
+- PaymentId - payment id from request
+- PaymentData - serialized encrypted payment data
+- AuthSampeKeys - array of N (N=8) public supernode ids and it's message keys. It's possible to retrieve a wallet address by public id
+
+Output: 
+- None
+
+Notes:
+- call can be either synchronous or asynchronous
+
+Request:
+```ruby
+POST /core/get_payment_data
+```
+Request body:
+```ruby
+{
+}
+```
+Normal response (sync call):
+```ruby
+HTTP code: 200
+```
+Response body:
+```ruby
+{
+        "PaymentId" : "payment_id string",
+        "PaymentData": {
+           "EncryptedPayment":  "08600e7b9bb...08600e7b9bb", // encrypted serialized payment (incl amount and payment details)
+           "AuthSampleKeys" : [  // 8 keys for auth sample members
+                { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805", "key": "7683a2a0..4c40e9cf" },
+                { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f", "key": "7683a2a0..4c40e9cf" },
+                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44", "key": "7683a2a0..4c40e9cf" },
+                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb", "key": "7683a2a0..4c40e9cf" },
+                { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805", "key": "7683a2a0..4c40e9cf" },
+                { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f", "key": "7683a2a0..4c40e9cf" },
+                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44", "key": "7683a2a0..4c40e9cf" },
+                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb", "key": "7683a2a0..4c40e9cf" },
+            ]
+            "PosProxy" : {
+                "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805",
+                "WalletAddress" : "F8F6UxPemGyfyxxU1yN4Yc52obSq4zboNC47iGSg5YnmSZB1cCHbAUQ47eXJ4xGBQoAMKC7JLhPbSBJrPRQ6tx8C1nUVs78"
+            }
+     }
+}
+```
+Normal response (async call, from remote peer via unicast message):
+```ruby
+HTTP code: 202
+```
+Response body: `N/A`
+
+Error response:
+```ruby
+HTTP code: 500
+```
+Response body:
+```ruby
+{
+    "code": <error_code>,
+    "message": "Error description"
+}
+```
+
 ### StorePaymentData - handles payment multicast and stores payment data
 
 **Called by Cryptonode to it's connected supernode**
@@ -641,6 +723,56 @@ Response body:
     "message": "Error description"
 }
 ```
+
+### GetTx - returns transaction by payment id. Called by POS
+
+Request:
+```ruby
+POST: /dapi/v3.0/get_tx
+```
+
+
+Payload
+```ruby
+{
+    "PaymentId" : "payment_id string"
+    "Signature" : "c73b2918e00663100188b3f277d2e9353c0ade56176f0a202ab51d424922a20e36a8501c214a4b1b47d78737aa3200b7a0b38cc1a146c390bd357860d99f6f09"
+}
+```
+
+Normal response:
+
+```ruby
+HTTP code: 200
+```
+
+Response body:
+```ruby
+{
+	"TxBlob": "08600e7b9bb...08600e7b9bb", // encrypted serialized transaction as hexadecimal string;
+	"TxKey" : "08600....a9ab18bfa5", // encrypted tx private key. 
+}
+```
+
+Pending response (tx for given payment id was not found on requested supernode, request forwarder to another supernode, client should try again)
+
+HTTP code: 202
+```ruby
+Response body: N/A
+```
+
+Error response:
+
+```ruby
+HTTP code: 500
+Response body:
+
+{
+    "code": <error_code>,
+    "message": "Error description"
+}
+```
+
 ## JSON - RPC interfaces on cryptonode side to communicate with supernode
 
 ### Broadcast - broadcasts message to all the network
