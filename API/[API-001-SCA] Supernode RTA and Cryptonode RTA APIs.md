@@ -30,7 +30,6 @@
 
 - [GetTx - returns transaction by payment id. Called by POS](#GetTx---returns-transaction-by-payment-id.-Called-by-POS)
 
-
 [JSON - RPC interfaces on cryptonode side to communicate with supernode](#json---rpc-interfaces-on-cryptonode-side-to-communicate-with-supernode)
 
 - [Broadcast - broadcasts message to all the network](#broadcast---broadcasts-message-to-all-the-network)
