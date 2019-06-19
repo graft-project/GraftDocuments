@@ -12,11 +12,11 @@ Suggested name: `rta-pos-cli`
 - POS keeps polling it's proxy supernode for the payment status change - until it gets finite state (Completed or Failed) or timeout triggered. Once one of these events occurs - POS prints the message to stdout
 
 ### CLI interface
-- --qrcode-file - filename where to write information to be transferred to a wallet file via QR-code. Default -value `wallet-qr-code.json`  
-- --amount - sale amount value as a floating point number. Default value should be e.g. 10.123 GRFT    
-- --sale-items - filename where to read sale items from (json-encoded, but exact scheme to be defined). if not specified - some hardcoded sale items should be used
-- --sale-timeout - defines a timeout for a sale. App starts counting time once status changed to "pending";  
-- --supernode-address - supernode address in "hostname:port" form. default is "localhost:28900"
+- _**qrcode-file**_ - filename where to write information to be transferred to a wallet file via QR-code. Default -value `wallet-qr-code.json`  
+- _**amount**_ - sale amount value as a floating point number. Default value should be e.g. _10.123 GRFT_    
+- _**sale-items**_ - filename where to read sale items from (json-encoded, but exact scheme to be defined). if not specified - some hardcoded sale items should be used
+- _**sale-timeout**_ - defines a timeout for a sale. App starts counting time once status changed to `pending`;  
+- _**supernode-address**_ - supernode address in `hostname:port` form. default is `localhost:28900`
 
 ## Wallet app
 Suggested name: `rta-wallet-cli`
@@ -30,10 +30,10 @@ Suggested name: `rta-wallet-cli`
 
 
 ### CLI interface
-- --qrcode-file - filename where to read "QR" information from. Default value `wallet-qr-code.json`;   
-- --sale-timeout - defines a timeout for a sale. App starts counting time once `/pay` called;    
-- --wallet-file - wallet name to read wallet from (same way as graft-wallet-cli does);  
-- --wallet-password - wallet password; 
-- --testnet - 1 - tesnet, 0 - mainnet (testnet is default); 
-- --daemon-address - graftnoded address in "hostname:port" form. default is "localhost:28880";  
-- --supernode-address - supernode address in "hostname:port" form. default is "localhost:28900"
+- _**qrcode-file**_ - filename where to read "QR" information from. Default value `wallet-qr-code.json`;   
+- _**sale-timeout**_ - defines a timeout for a sale. App starts counting time once `/pay` called;    
+- _**wallet-file**_ - wallet name to read wallet from (same way as `graft-wallet-cli` does);  
+- _**wallet-password**_ - wallet password; 
+- _**testnet**_ - 1 - tesnet, 0 - mainnet (testnet is default); 
+- _**daemon-address**_ - graftnoded address in `hostname:port` form. default is `localhost:28880`;  
+- _**supernode-address**_ - supernode address in `hostname:port` form. default is `localhost:28900`
