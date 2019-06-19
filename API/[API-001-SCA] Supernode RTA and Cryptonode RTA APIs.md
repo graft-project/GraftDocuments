@@ -16,6 +16,10 @@
    
 - [GetSupernodeList - returns list of valid or all known supernodes](#getsupernodelist---returns-list-of-valid-or-all-known-supernodes)
 
+- [TxRequest - requests transaction by payment id.](#TxRequest---requests-transaction-by-payment-id.) 
+
+- [TxResponse - async response with transaction.](#TxResponse---async-response-with-transaction.)
+
 [PoS and Wallet Interfaces](#pos-and-wallet-interfaces)
    
 - [Presale - supernode returns auth sample for given payment id](#presale---supernode-returns-auth-sample-for-given-payment-id)
@@ -83,6 +87,7 @@ Request body:
     "PaymentId": "payment_id string",
     "BlockNumber": 123456,
     "BlockHash" : "08600e7b9bbcce6ace8dcc786cff8804cd5b4623abc636b11446dea9ab18bfa5"
+    "CallbackURI": "[optional callback URI where to deliver response]"
 }
 ```
 Normal response (sync call):
@@ -447,6 +452,115 @@ Response body:
     "message": "Error description"
 }
 ```
+
+### TxRequest - requests transaction by payment id.
+
+
+Input:
+- PaymentId - payment id for transaction;
+- Signature - POS signature to authenticate the request
+
+Output: 
+- PaymentId - payment id for transaction;
+- TxBlob - encrypted tx blob
+- TxKey  - encrypted tx private key
+
+Request:
+```ruby
+POST: /core/tx_request
+```
+
+Payload
+```ruby
+{
+    "PaymentId" : "payment_id string"
+    "Signature" : "c73b2918e00663100188b3f277d2e9353c0ade56176f0a202ab51d424922a20e36a8501c214a4b1b47d78737aa3200b7a0b38cc1a146c390bd357860d99f6f09"
+    "CallbackURI": "[optional callback URI where to deliver response]. in case empty or doesn't exist - response will passed directly to a caller"
+}
+```
+
+Normal response (sync):
+
+```ruby
+HTTP code: 200
+```
+
+Response body:
+```ruby
+{
+    "PaymentId" : "payment_id string",
+    "TxBlob": "08600e7b9bb...08600e7b9bb", // encrypted serialized transaction as hexadecimal string;
+	"TxKey" : "08600....a9ab18bfa5", // encrypted tx private key. 
+}
+```
+Normal response (async, in case `CallbackURI` passed):
+```ruby
+HTTP code: 202
+
+Response body: N/A
+```
+Error response:
+
+```ruby
+HTTP code: 500
+```
+```
+Response body:
+
+{
+    "code": <error_code>,
+    "message": "Error description"
+}
+```
+
+### TxResponse - async response with transaction. 
+
+Async response to tx requst
+
+Input: 
+- PaymentId - payment id for transaction;
+- TxBlob - encrypted tx blob
+- TxKey  - encrypted tx private key
+
+Output: None
+ 
+
+Request:
+```ruby
+POST: /core/tx_response
+```
+
+Payload
+
+```ruby
+{
+    "PaymentId" : "payment_id string",
+    "TxBlob": "08600e7b9bb...08600e7b9bb", // encrypted serialized transaction as hexadecimal string;
+	"TxKey" : "08600....a9ab18bfa5", // encrypted tx private key. 
+}
+```
+
+Normal response:
+
+```ruby
+HTTP code: 200
+```
+
+Error response:
+
+```ruby
+HTTP code: 500
+```
+```
+Response body:
+
+{
+    "code": <error_code>,
+    "message": "Error description"
+}
+```
+
+
 ## Pos and Wallet Interfaces
 
 ### Presale - supernode returns auth sample for given payment id
@@ -689,6 +803,15 @@ Response body:
 ```
 ### GetPaymentStatus - returns payment status for given payment id
 
+**Called by POS or Wallet**
+
+Input:
+- PaymentId - globally unique payment id
+
+Ouput:
+- Status - 1 (Waiting) | 2 (InProgress) | 3 (Success) | 4 (Fail) | 5 (RejectedByWallet) | 6 (RejectedByPOS)
+
+
 Request:
 ```ruby
 POST: /dapi/v3.0/get_payment_status/
@@ -724,6 +847,15 @@ Response body:
 ```
 
 ### GetTx - returns transaction by payment id. Called by POS
+
+Input:
+- PaymentId - globally unique payment id
+- Signature - POS signature so processing supernode can authorize the sender
+
+Ouput:
+- TxBlob -  encrypted serialized transaction
+- TxKey  -  encrypted tx private key
+
 
 Request:
 ```ruby
