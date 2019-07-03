@@ -72,7 +72,7 @@ Input:
 Output: 
 - PaymentID - payment id from request (to match response/request in case async call)
 - PaymentData - serialized encrypted payment data
-- AuthSampeKeys - array of N (N=8) public supernode ids and it's message keys. It's possible to retrieve a wallet address by public id
+- AuthSampeKeys - array of N (N=8) public supernode ids. It's possible to retrieve a wallet address by public id (TODO: introduce such api)
 
 Notes:
 - call can be either synchronous or asynchronous
@@ -101,14 +101,14 @@ Response body:
         "PaymentData": {
            "EncryptedPayment":  "08600e7b9bb...08600e7b9bb", // encrypted serialized payment (incl amount and payment details)
            "AuthSampleKeys" : [  // 8 keys for auth sample members
-                { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb", "key": "7683a2a0..4c40e9cf" },
+                { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805"},
+                { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f"},
+                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44"},
+                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb"},
+                { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805"},
+                { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f"},
+                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44"},
+                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb"},
             ]
             "PosProxy" : {
                 "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805",
@@ -626,7 +626,7 @@ Response body:
 
 ### Sale - process sale
 
-**Сalled by PoS**
+**Сalled by PoS to PoS Proxy supernode**
 
 Input:
 - PaymentData - encrypted payment data blob (list of items, amounts, any other info)
@@ -635,6 +635,8 @@ Input:
 
 Output: 
 - Accepted or error 
+
+Once Pos Proxy processs that call - it should change payment status to "Pending"
 
 POST: `/dapi/v3.0/sale/`
 
@@ -645,14 +647,14 @@ Payload:
     "PaymentData": {
       "EncryptedPayment":  "08600e7b9bb...08600e7b9bb", // encrypted serialized payment (incl amount and payment details)
       "AuthSampleKeys" : [  // 8 keys for auth sample members
-            { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805", "key": "7683a2a0..4c40e9cf" },
-            { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f", "key": "7683a2a0..4c40e9cf" },
-            { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44", "key": "7683a2a0..4c40e9cf" },
-            { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb", "key": "7683a2a0..4c40e9cf" },
-            { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805", "key": "7683a2a0..4c40e9cf" },
-            { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f", "key": "7683a2a0..4c40e9cf" },
-            { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44", "key": "7683a2a0..4c40e9cf" },
-            { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb", "key": "7683a2a0..4c40e9cf" },
+            { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805"},
+            { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f"},
+            { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44"},
+            { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb"},
+            { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805"},
+            { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f"},
+            { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44"},
+            { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb"},
         ]
         "PosProxy" : {
             "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805",
@@ -717,14 +719,14 @@ Response body:
      "PaymentData": {
            "EncryptedPayment":  "08600e7b9bb...08600e7b9bb", // encrypted serialized payment (incl amount and payment details)
            "AuthSampleKeys" : [  // 8 keys for auth sample members
-                { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb", "key": "7683a2a0..4c40e9cf" },
+                { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805" },
+                { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f" },
+                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44" },
+                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb" },
+                { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805" },
+                { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f" },
+                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44" },
+                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb" },
             ]
             "PosProxy" : {
                 "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805",
@@ -773,15 +775,16 @@ Payload:
     "TxBlob": "08600e7b9bb...08600e7b9bb", // encrypted serialized transaction as hexadecimal string. Includes payment id;
     "TxKey" : "08600....a9ab18bfa5", // encrypted tx private key.
     "MessageKeys" : [  // 8+2 keys for auth sample members and proxy supernodes
-            { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805", "key": "7683a2a0..4c40e9cf" },
-            { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f", "key": "7683a2a0..4c40e9cf" },
-            { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44", "key": "7683a2a0..4c40e9cf" },
-            { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb", "key": "7683a2a0..4c40e9cf" },
-            { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805", "key": "7683a2a0..4c40e9cf" },
-            { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f", "key": "7683a2a0..4c40e9cf" },
-            { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44", "key": "7683a2a0..4c40e9cf" },
-            { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb", "key": "7683a2a0..4c40e9cf" },
-            { "id" : "45afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f", "key": "7683a2a0..4c40e9cf" },
+                { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805" },
+                { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f" },
+                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44" },
+                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb" },
+                { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805" },
+                { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f" },
+                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44" },
+                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb" },
+                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44" },
+                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb" }
  
     ]
 }
