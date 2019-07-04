@@ -99,7 +99,7 @@ Response body:
 {
         "PaymentId" : "payment_id string",
         "PaymentData": {
-           "EncryptedPayment":  "08600e7b9bb...08600e7b9bb", // encrypted serialized payment (incl amount and payment details)
+           "EncryptedPayment":  "08600e7b9bb...08600e7b9bb", // serialized encrypted payment data (includes amount and encrypted payment details) 
            "AuthSampleKeys" : [  // 8 keys for auth sample members
                 { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805"},
                 { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f"},
@@ -169,16 +169,16 @@ Response body:
 {
         "PaymentId" : "payment_id string",
         "PaymentData": {
-           "EncryptedPayment":  "08600e7b9bb...08600e7b9bb", // encrypted serialized payment (incl amount and payment details)
-           "AuthSampleKeys" : [  // 8 keys for auth sample members
-                { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb", "key": "7683a2a0..4c40e9cf" },
+           "EncryptedPayment":  "08600e7b9bb...08600e7b9bb", //  serialized encrtypted payment data (includes amount and encrypted payment details) 
+           "AuthSampleKeys" : [  // 8 public id keys for auth sample members
+                { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805" },
+                { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f" },
+                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44" },
+                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb" },
+                { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805" },
+                { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f" },
+                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44" },
+                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb" },
             ]
             "PosProxy" : {
                 "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805",
@@ -230,16 +230,16 @@ Request body:
     "PaymentId": "payment_id string",
  
      "PaymentData": {
-           "EncryptedPayment":  "08600e7b9bb...08600e7b9bb", // encrypted serialized payment (incl amount and payment details)
+           "EncryptedPayment":  "08600e7b9bb...08600e7b9bb", //  serialized encrtypted payment data(includes amount and encrypted payment details) 
            "AuthSampleKeys" : [  // 8 keys for auth sample members
-                { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44", "key": "7683a2a0..4c40e9cf" },
-                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb", "key": "7683a2a0..4c40e9cf" },
+                { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805" },
+                { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f" },
+                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44" },
+                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb" },
+                { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805" },
+                { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f" },
+                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44" },
+                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb" },
             ]
             "PosProxy" : {
                 "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805",
@@ -273,7 +273,7 @@ Input:
 
 - TxBlob - encrypted transaction blob (encrypted transaction blob, serialized as hexadecimal)
 - TxKey  - encrypted transaction private key, serialized as hexadecimal;
-- MessageKeys - Map of  Auth sample ids and corresponding encrypted message keys to decrypt tx key
+
 
 Output: 
 - None (this is async call)
@@ -285,19 +285,9 @@ POST: /core/authorize_rta_tx
 Request body:
 ```ruby
 {
-    "TxBlob": "08600e7b9bb...08600e7b9bb", // encrypted serialized transaction as hexadecimal string. Includes payment id;
-    "TxKey" : "08600....a9ab18bfa5", // encrypted tx key.
-    "MessageKeys" : [  // 8 keys for auth sample members + 1 key for pos proxy. There's no wallet proxy here as it the one who originates this message so tx is already signed by wallet proxy
-        { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805", "key": "7683a2a0..4c40e9cf" },
-        { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f", "key": "7683a2a0..4c40e9cf" },
-        { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44", "key": "7683a2a0..4c40e9cf" },
-        { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb", "key": "7683a2a0..4c40e9cf" },
-        { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805", "key": "7683a2a0..4c40e9cf" },
-        { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f", "key": "7683a2a0..4c40e9cf" },
-        { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44", "key": "7683a2a0..4c40e9cf" },
-        { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb", "key": "7683a2a0..4c40e9cf" },
-        { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb", "key": "7683a2a0..4c40e9cf" },
-    ]
+    "TxBlob": "08600e7b9bb...08600e7b9bb", # serialized transaction as hexadecimal string. Contains payment id, PoS, PoS Proxy, Wallet Proxy and  AuthSample public keys in tx.extra
+    "TxKey" : "08600....a9ab18bfa5", # encrypted tx key. cypher message already contains encrypted session key (`graft::crypto_tools`)
+    
 }
 ```
 Normal response:
