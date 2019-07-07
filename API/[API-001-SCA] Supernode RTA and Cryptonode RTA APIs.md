@@ -550,6 +550,51 @@ Response body:
 }
 ```
 
+### GetSupernodeInfo - returns supernode information by it's public id
+
+Input:
+- PublicId - string
+
+Output: 
+- Supernode properties object
+
+Request:
+```ruby
+GET: /core/get_supernode_info/<public_id>
+```
+Normal response:
+```ruby
+HTTP code: 200
+```
+Response body:
+```ruby
+
+{
+    "Address": "F52XRQoyr5KjaTtLnRVLVJLTZz1zsEcScaoa1voYSFWq9Nes1u3rP7vYwYcRiXxpu5VUGffM35G9pBYAPqj1yDa267zooyr",
+    "PublicId": "d839513f06234034f7f857164cf8ab9469119d56d18559e9f9942f48a7cee71b",
+    "StakeAmount": 500000000000000,
+    "StakeFirstValidBlock": 300261,
+    "StakeExpiringBlock": 305261,
+    "IsStakeValid": true,
+    "BlockchainBasedListTier": 1,
+    "AuthSampleBlockchainBasedListTier": 1,
+    "IsAvailableForAuthSample": true,
+    "LastUpdateAge": 65
+}
+
+```
+Error response:
+```ruby
+HTTP code: 500
+```
+Response body:
+```ruby
+{
+    "code": <error_code>,
+    "message": "Error description"
+}
+```
+
 
 ## Pos and Wallet Interfaces
 
