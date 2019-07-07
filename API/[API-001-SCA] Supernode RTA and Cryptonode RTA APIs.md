@@ -72,7 +72,7 @@ Input:
 Output: 
 - PaymentID - payment id from request (to match response/request in case async call)
 - PaymentData - serialized encrypted payment data
-- AuthSampeKeys - array of N (N=8) public supernode ids. It's possible to retrieve a wallet address by public id (TODO: introduce such api)
+- AuthSample - array of N (N=8) public supernode ids. It's possible to retrieve a wallet address by public id (TODO: introduce such api)
 
 Notes:
 - call can be either synchronous or asynchronous
@@ -100,7 +100,7 @@ Response body:
         "PaymentId" : "payment_id string",
         "PaymentData": {
            "EncryptedPayment":  "08600e7b9bb...08600e7b9bb", // serialized encrypted payment data (includes amount and encrypted payment details) 
-           "AuthSampleKeys" : [  // 8 keys for auth sample members
+           "AuthSample" : [  // 8 keys for auth sample members
                 { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805"},
                 { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f"},
                 { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44"},
@@ -170,7 +170,7 @@ Response body:
         "PaymentId" : "payment_id string",
         "PaymentData": {
            "EncryptedPayment":  "08600e7b9bb...08600e7b9bb", //  serialized encrtypted payment data (includes amount and encrypted payment details) 
-           "AuthSampleKeys" : [  // 8 public id keys for auth sample members
+           "AuthSample" : [  // 8 public id keys for auth sample members
                 { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805" },
                 { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f" },
                 { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44" },
@@ -211,8 +211,8 @@ Response body:
 
 Input:
 - PaymentID - globally unique payment id
-- PaymentData - serialized encrypted payment data (incl amount and purchase details)
-- MessageKeys - array of encrypted message keys corresponding to each auth sample members. Keys needed to decrypt PaymentData and Amount
+- PaymentData - serialized encrypted payment data (incl amount and purchase details), auth sample, and pos proxy keys
+    
 
 Output: 
 - None
@@ -231,7 +231,7 @@ Request body:
  
      "PaymentData": {
            "EncryptedPayment":  "08600e7b9bb...08600e7b9bb", //  serialized encrtypted payment data(includes amount and encrypted payment details) 
-           "AuthSampleKeys" : [  // 8 keys for auth sample members
+           "AuthSample" : [  # 8 keys for auth sample members. TODO: introduce interface to get supernode wallet address by public id
                 { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805" },
                 { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f" },
                 { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44" },
@@ -559,6 +559,7 @@ Response body:
 
 Input:
 - PaymentID - randomly generated string (TODO: define what is the form of the string - e.g. GUID, some fixed size hexadecimal/base64/base58 etc)
+
 Output: 
 - BlockNumber - number of block auth sample built for;
 - BlockHash  - hash of this block in blockchain (probably redudant);
@@ -621,7 +622,7 @@ Response body:
 Input:
 - PaymentData - encrypted payment data blob (list of items, amounts, any other info)
 - Amount - encrypted transaction amount in atomic units 
-- MessageKeys - array of encrypted message keys (to decrypt PaymentData and Amount)
+- AuthSample - auth sample keys
 
 Output: 
 - Accepted or error 
@@ -636,7 +637,7 @@ Payload:
     "PaymentID" : <globally unique payment id>
     "PaymentData": {
       "EncryptedPayment":  "08600e7b9bb...08600e7b9bb", // encrypted serialized payment (incl amount and payment details)
-      "AuthSampleKeys" : [  // 8 keys for auth sample members
+      "AuthSample" : [  // 8 keys for auth sample members
             { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805"},
             { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f"},
             { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44"},
@@ -681,7 +682,7 @@ Input:
 Output: 
 
 - PaymentData - serialized encrypted payment data
-- AuthSampeKeys - array of N (N=8) public supernode ids and it's message keys. It's possible to retrieve a wallet address by public id
+- AuthSample - array of N (N=8) public supernode ids. It's possible to retrieve a wallet address by public id
 
 Notes:
 
@@ -708,7 +709,7 @@ Response body:
 {
      "PaymentData": {
            "EncryptedPayment":  "08600e7b9bb...08600e7b9bb", // encrypted serialized payment (incl amount and payment details)
-           "AuthSampleKeys" : [  // 8 keys for auth sample members
+           "AuthSample" : [  // 8 keys for auth sample members
                 { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805" },
                 { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f" },
                 { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44" },
