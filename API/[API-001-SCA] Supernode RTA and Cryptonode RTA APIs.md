@@ -323,6 +323,7 @@ Request:
 ```ruby
 POST: /core/update_payment_status
 ```
+
 Normal response:
 ```ruby
 HTTP code: 202
@@ -560,8 +561,21 @@ Output:
 
 Request:
 ```ruby
-GET: /core/get_supernode_info/<public_id>
+POST: /core/get_supernode_info
 ```
+
+Request body:
+```ruby
+{
+    "input": [
+        "d839513f06234034f7f857164cf8ab9469119d56d18559e9f9942f48a7cee71b",
+        .....
+        "d839513f06234034f7f857164cf8ab9469119d56d18559e9f9942f48a7cee71b"
+    ]
+}
+```
+
+
 Normal response:
 ```ruby
 HTTP code: 200
@@ -570,16 +584,32 @@ Response body:
 ```ruby
 
 {
-    "Address": "F52XRQoyr5KjaTtLnRVLVJLTZz1zsEcScaoa1voYSFWq9Nes1u3rP7vYwYcRiXxpu5VUGffM35G9pBYAPqj1yDa267zooyr",
-    "PublicId": "d839513f06234034f7f857164cf8ab9469119d56d18559e9f9942f48a7cee71b",
-    "StakeAmount": 500000000000000,
-    "StakeFirstValidBlock": 300261,
-    "StakeExpiringBlock": 305261,
-    "IsStakeValid": true,
-    "BlockchainBasedListTier": 1,
-    "AuthSampleBlockchainBasedListTier": 1,
-    "IsAvailableForAuthSample": true,
-    "LastUpdateAge": 65
+   "output":[
+      {
+         "Address":"F52XRQoyr5KjaTtLnRVLVJLTZz1zsEcScaoa1voYSFWq9Nes1u3rP7vYwYcRiXxpu5VUGffM35G9pBYAPqj1yDa267zooyr",
+         "PublicId":"d839513f06234034f7f857164cf8ab9469119d56d18559e9f9942f48a7cee71b",
+         "StakeAmount":500000000000000,
+         "StakeFirstValidBlock":300261,
+         "StakeExpiringBlock":305261,
+         "IsStakeValid":true,
+         "BlockchainBasedListTier":1,
+         "AuthSampleBlockchainBasedListTier":1,
+         "IsAvailableForAuthSample":true,
+         "LastUpdateAge":65
+      },
+      {
+         "Address":"F52XRQoyr5KjaTtLnRVLVJLTZz1zsEcScaoa1voYSFWq9Nes1u3rP7vYwYcRiXxpu5VUGffM35G9pBYAPqj1yDa267zooyr",
+         "PublicId":"d839513f06234034f7f857164cf8ab9469119d56d18559e9f9942f48a7cee71b",
+         "StakeAmount":500000000000000,
+         "StakeFirstValidBlock":300261,
+         "StakeExpiringBlock":305261,
+         "IsStakeValid":true,
+         "BlockchainBasedListTier":1,
+         "AuthSampleBlockchainBasedListTier":1,
+         "IsAvailableForAuthSample":true,
+         "LastUpdateAge":65
+      }
+   ]
 }
 
 ```
