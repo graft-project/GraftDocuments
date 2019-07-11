@@ -825,9 +825,8 @@ Response body:
 
 Input:
 
-- TxBlob - encrypted transaction blob
-- TxKey - encrypted transaction private key
-- MessageKeys - encrypted message keys (multiple recipients encryption, to decrypt transaction and tx private key)
+- TxBlob - encrypted transaction blob (one-to-many scheme, session keys are embedded into blob)
+- TxKey - encrypted transaction private key (one-to-many scheme, session keys are embedded into blob)
 
 Output: 
 
@@ -839,20 +838,7 @@ Payload:
 ```ruby
 {
     "TxBlob": "08600e7b9bb...08600e7b9bb", // encrypted serialized transaction as hexadecimal string. Includes payment id;
-    "TxKey" : "08600....a9ab18bfa5", // encrypted tx private key.
-    "MessageKeys" : [  // 8+2 keys for auth sample members and proxy supernodes
-                { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805" },
-                { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f" },
-                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44" },
-                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb" },
-                { "id" : "1f0a6a65fc768348f781b0ad58dcc910408c3bd85cfab9d451577f5a98261805" },
-                { "id" : "96afb7860aa4bb758aae24a5f182b4e1f641d782c1fc772d3228da5c6108e57f" },
-                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44" },
-                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb" },
-                { "id" : "54749bad9925d34e414062a4e3cf3991e1a1ee5c778fc6c44a53c11f55cafe44" },
-                { "id" : "25b316d25e6c2dd8dd60fd983de9fbd5a9bb1fcf96d65bbb1c295708bafa00cb" }
- 
-    ]
+    "TxKey" : "08600....a9ab18bfa5"        // encrypted tx private key.
 }
 ```
 Normal response:
