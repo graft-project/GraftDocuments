@@ -61,7 +61,6 @@
 
 **Normally called by Cryptonode to it's connected supernode, but also supports synchronous call**
 
-
 Input:
 
 - PaymentID - globally unique payment id
@@ -82,7 +81,7 @@ Request:
 POST /core/get_payment_data
 ```
 Request body:
-```ruby
+```json
 {
     "PaymentId": "payment_id string",
     "BlockNumber": 123456,
@@ -95,7 +94,7 @@ Normal response (sync call):
 HTTP code: 200
 ```
 Response body:
-```ruby
+```json
 {
         "PaymentId" : "payment_id string",
         "PaymentData": {
