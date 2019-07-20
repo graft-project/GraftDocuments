@@ -81,7 +81,7 @@ Request:
 POST /core/get_payment_data
 ```
 Request body:
-```json
+```ruby
 {
     "PaymentId": "payment_id string",
     "BlockNumber": 123456,
@@ -94,7 +94,7 @@ Normal response (sync call):
 HTTP code: 200
 ```
 Response body:
-```json
+```ruby
 {
         "PaymentId" : "payment_id string",
         "PaymentData": {
