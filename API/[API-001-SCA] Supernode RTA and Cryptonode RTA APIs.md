@@ -62,7 +62,7 @@
 **Normally called by Cryptonode to it's connected supernode, but also supports synchronous call**
 
 
-==Input:==
+Input:
 
 - PaymentID - globally unique payment id
 - BlockNumber - number of block auth sample built for;
